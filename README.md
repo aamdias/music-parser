@@ -1,8 +1,8 @@
 # Lyrics and Chords Transcription API
 
 This FastAPI application receives a music audio file (e.g., MP3), processes it end-to-end, and returns:
-  - Timestamped song lyrics (via OpenAI Whisper with whisper-timestamped)
-  - Timestamped chord events (via autochord)
+  - Timestamped song lyrics (via OpenAI GPT-4o transcribe model)
+  - Timestamped chord events (**Upcoming: AI-powered chord recognition**)
   - Metadata: title, duration, BPM (optional), key (optional), source, and model versions
 
 ## Requirements
@@ -23,7 +23,7 @@ This FastAPI application receives a music audio file (e.g., MP3), processes it e
 ## Usage
 1. Start the app:
    ```bash
-   uvicorn main:app --reload
+   python3 main.py
    ```
 2. Send a POST request to `/analyze` with form-data:
    - Key: `file`
@@ -41,8 +41,8 @@ This FastAPI application receives a music audio file (e.g., MP3), processes it e
     "key": "",
     "source": "filename.mp3",
     "model_versions": {
-      "lyrics": "whisper-large-v3-timestamped",
-      "chords": "1.3.0"
+      "lyrics": "gpt-4o-transcribe",
+      "chords": "1.3.0 (to be replaced by AI model)"
     }
   },
   "lyrics": [
@@ -54,7 +54,16 @@ This FastAPI application receives a music audio file (e.g., MP3), processes it e
     ...
   ]
 }
-```
+
+## Project Roadmap
+
+**Note:** The current chord detection uses `autochord`, which is not accurate enough for professional or complex music. We are actively developing a new AI-based chord recognition system leveraging deep learning and the latest research. This will significantly improve chord accuracy and robustness.
+
+### Planned Improvements
+- Replace `autochord` with a custom-trained neural network for chord recognition
+- Better support for complex chords and polyphony
+- Improved handling of noisy or live recordings
+- Open to community contributions for model training, evaluation, and dataset gathering
 
 ## Troubleshooting
 
@@ -68,4 +77,3 @@ This FastAPI application receives a music audio file (e.g., MP3), processes it e
   pip install -r requirements.txt
   ```
   Alternatively, consider using Python 3.11 or 3.10, as some versions of `openai-whisper` may not build cleanly on Python 3.13.
-```
